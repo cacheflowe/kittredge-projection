@@ -1,0 +1,6 @@
+_assets
+.idea/
+bin/
+output/
+*Thumbs.db
+.DS_Store
