@@ -97,14 +97,18 @@ public class VoronoiCell {
   protected void updateScale() {
     scale.setInc(0.01f);
     scale.update();
+    checkSwitchModeWhenHidden();
+  }
+
+  protected void checkSwitchModeWhenHidden() {
     if(scale.value() == 0 && scale.target() == 0) {
       boolean modeChanged = curMode != queuedMode; 
       curMode = queuedMode;
       scale.setTarget(1);
       if(modeChanged) {
-        setStartPosition();
+        setStartPosition(); // 
       } else {
-        recycle();
+        recycle(); // if we're running the same mode, just recycle the cell to a new starting position
       }
     }
   }

@@ -48,7 +48,7 @@ implements IAppStoreListener {
   protected String UI_G = "UI_G";
   protected String UI_B = "UI_B";
 
-  // current particle arrangement & behavior
+  // current particle arrangement
   public enum MODE_PATTERN {
     WATERFALL,
     GRID,
@@ -56,18 +56,31 @@ implements IAppStoreListener {
     RINGS
   }
   protected MODE_PATTERN curPatternMode = MODE_PATTERN.WATERFALL;
+  // funky enum randomization helpers
   private static final List<MODE_PATTERN> MODE_PATTERN_VALS = Collections.unmodifiableList(Arrays.asList(MODE_PATTERN.values()));
   private static final int PATTERNS_NUM = MODE_PATTERN_VALS.size();
   private static final Random RANDOM_PATTERN = new Random();
+  
+  // current particle movement
+  public enum MODE_MOVEMENT {
+    WATERFALL,
+    GRID,
+    SPIRAL,
+    RINGS
+  }
+  protected MODE_MOVEMENT curMovementMode = MODE_MOVEMENT.WATERFALL;
+  // funky enum randomization helpers
+  private static final List<MODE_MOVEMENT> MODE_MOVEMENT_VALS = Collections.unmodifiableList(Arrays.asList(MODE_MOVEMENT.values()));
+  private static final int MOVEMENTS_NUM = MODE_MOVEMENT_VALS.size();
+  private static final Random RANDOM_MOVEMENT = new Random();
+
 
   // current cycling mode
   public enum SYSTEM_MODE {
-    COLLECT,
-    BE_FREE
+    COLLECT,  // Particles fade out, pick new mode, then fade back into the new arrangement
+    BE_FREE   // Particles travel in whatever direction they've been given
   }
   protected SYSTEM_MODE curSystemMode = SYSTEM_MODE.COLLECT;
-
-  protected PShader moveShader;
 
   public Patterns() {
     p = (PAppletHax) P.p;
@@ -255,6 +268,10 @@ implements IAppStoreListener {
     return MODE_PATTERN_VALS.get(RANDOM_PATTERN.nextInt(PATTERNS_NUM));
   }
 
+  protected MODE_MOVEMENT randomMovementMode() {
+    return MODE_MOVEMENT_VALS.get(RANDOM_MOVEMENT.nextInt(MOVEMENTS_NUM));
+  }
+
   protected void drawParticles() {
     // PG.setDrawFlat2d(pg, true);
     pg.ortho();
@@ -270,9 +287,7 @@ implements IAppStoreListener {
 
   public void updatedNumber(String key, Number val) {
     // draw
-    // if(key.equals(AppState.ANIMATION_FRAME_PRE)) drawPre(val.intValue());
     if(key.equals(AppState.ANIMATION_FRAME)) draw(val.intValue());
-    // if(key.equals(AppState.ANIMATION_FRAME_POST)) drawPost(val.intValue());
 
     // UI
     if(key.equals(UI_R)) { offsetR.setTarget(val.floatValue()); }

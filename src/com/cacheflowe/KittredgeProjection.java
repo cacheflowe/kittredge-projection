@@ -15,14 +15,13 @@ public class KittredgeProjection
 extends PAppletHax
 implements IAppStoreListener {
   public static void main(String args[]) { arguments = args; PAppletHax.main(Thread.currentThread().getStackTrace()[1].getClassName()); }
-
   
   protected Patterns patterns;
   protected PostFX postFX;
   protected Uptime uptime;
 
   protected void config() {
-    int appW = 1080 * 2;
+    int appW = 2160;
     int appH = 1920;
     Config.setAppSize(appW, appH);
     Config.setPgSize(appW, appH);
@@ -33,6 +32,7 @@ implements IAppStoreListener {
     Config.setProperty(AppSettings.SHOW_UI, false);
     Config.setProperty(AppSettings.SHOW_FPS_IN_TITLE, false);
     Config.setProperty(AppSettings.LOOP_FRAMES, 1500);
+    Config.printProperties();
   }
   
   protected void firstFrame() {
