@@ -6,17 +6,17 @@ import com.haxademic.core.math.MathUtil;
 
 import processing.core.PGraphics;
 
-public class ArrangementRandom
+public class ArrangementDiag
 implements IArrangement {
 
   public String toString() {
-    return "Random";
+    return "Diag";
   }
 
   public void layout(VoronoiCell cell, PGraphics pg) {
     cell.setPosition(
-      P.map(P.p.noise(cell.i), 0.3f, 0.7f, 0, pg.width),
-      P.map(P.p.noise(cell.i + 1000), 0.3f, 0.7f, 0, pg.height)
+      P.map(P.sin(cell.i), -1, 1, 0, pg.width),
+      P.map(P.sin(cell.i + 1000), -1, 1, 0, pg.height)
     );
     cell.rads = MathUtil.getRadiansToTarget(pg.width/2, pg.height/2, cell.x, cell.y);
   }

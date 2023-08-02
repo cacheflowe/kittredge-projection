@@ -14,7 +14,7 @@ implements IMovement {
   }
 
   public void initSpeed(VoronoiCell cell, PGraphics pg) {
-    cell.speedX = 0f;
+    cell.speedX = MathUtil.randRangeDecimal(-0.1f, 0.1f);
     cell.speedY = P.p.random(0.25f, 1f);
     cell.accelX = 1f;
     cell.accelY = 1 + MathUtil.randRangeDecimal(0.001f, 0.003f);

@@ -1,5 +1,6 @@
 package com.cacheflowe;
 
+import com.cacheflowe.arrangements.ArrangementDiag;
 import com.cacheflowe.arrangements.ArrangementGrid;
 import com.cacheflowe.arrangements.ArrangementRandom;
 import com.cacheflowe.arrangements.ArrangementRings;
@@ -60,6 +61,7 @@ implements IAppStoreListener {
   // current particle arrangement
   public static IArrangement[] arrangements = new IArrangement[] {
     new ArrangementGrid(),
+    new ArrangementDiag(),
     new ArrangementRandom(),
     new ArrangementRings(),
     new ArrangementSpiral(),
