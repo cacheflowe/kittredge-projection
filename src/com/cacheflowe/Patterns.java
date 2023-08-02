@@ -1,25 +1,31 @@
 package com.cacheflowe;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
+import com.cacheflowe.arrangements.ArrangementGrid;
+import com.cacheflowe.arrangements.ArrangementRandom;
+import com.cacheflowe.arrangements.ArrangementRings;
+import com.cacheflowe.arrangements.ArrangementSpiral;
+import com.cacheflowe.arrangements.IArrangement;
+import com.cacheflowe.movements.IMovement;
+import com.cacheflowe.movements.MovementGrid;
+import com.cacheflowe.movements.MovementOutFromCenterVertical;
+import com.cacheflowe.movements.MovementRadialOut;
+import com.cacheflowe.movements.MovementWaterfall;
 import com.haxademic.core.app.P;
 import com.haxademic.core.app.PAppletHax;
 import com.haxademic.core.data.store.AppState;
 import com.haxademic.core.data.store.IAppStoreListener;
+import com.haxademic.core.file.FileUtil;
 import com.haxademic.core.hardware.keyboard.KeyboardState;
 import com.haxademic.core.math.MathUtil;
 import com.haxademic.core.math.easing.EasingFloat;
 import com.haxademic.core.math.easing.LinearFloat;
+import com.haxademic.core.media.DemoAssets;
 import com.haxademic.core.render.FrameLoop;
 import com.haxademic.core.system.Console;
 import com.haxademic.core.ui.UI;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
-import processing.opengl.PShader;
 
 public class Patterns 
 implements IAppStoreListener {
@@ -48,45 +54,38 @@ implements IAppStoreListener {
   protected String UI_G = "UI_G";
   protected String UI_B = "UI_B";
 
+  // debug
+  protected String SHOW_MODES_DEBUG = "SHOW_MODES_DEBUG";
+
   // current particle arrangement
-  public enum MODE_PATTERN {
-    WATERFALL,
-    GRID,
-    SPIRAL,
-    RINGS
-  }
-  protected MODE_PATTERN curPatternMode = MODE_PATTERN.WATERFALL;
-  // funky enum randomization helpers
-  private static final List<MODE_PATTERN> MODE_PATTERN_VALS = Collections.unmodifiableList(Arrays.asList(MODE_PATTERN.values()));
-  private static final int PATTERNS_NUM = MODE_PATTERN_VALS.size();
-  private static final Random RANDOM_PATTERN = new Random();
+  public static IArrangement[] arrangements = new IArrangement[] {
+    new ArrangementGrid(),
+    new ArrangementRandom(),
+    new ArrangementRings(),
+    new ArrangementSpiral(),
+  };
+  protected IArrangement curArrangementMode = arrangements[0];
   
   // current particle movement
-  public enum MODE_MOVEMENT {
-    WATERFALL,
-    GRID,
-    SPIRAL,
-    RINGS
-  }
-  protected MODE_MOVEMENT curMovementMode = MODE_MOVEMENT.WATERFALL;
-  // funky enum randomization helpers
-  private static final List<MODE_MOVEMENT> MODE_MOVEMENT_VALS = Collections.unmodifiableList(Arrays.asList(MODE_MOVEMENT.values()));
-  private static final int MOVEMENTS_NUM = MODE_MOVEMENT_VALS.size();
-  private static final Random RANDOM_MOVEMENT = new Random();
-
+  public static IMovement[] movements = new IMovement[] {
+    new MovementRadialOut(),
+    new MovementWaterfall(),
+    new MovementGrid(),
+    new MovementOutFromCenterVertical(),
+  };
+  protected IMovement curMovementMode = movements[0];
 
   // current cycling mode
-  public enum SYSTEM_MODE {
+  public static enum SYSTEM_MODE {
     COLLECT,  // Particles fade out, pick new mode, then fade back into the new arrangement
     BE_FREE   // Particles travel in whatever direction they've been given
   }
-  protected SYSTEM_MODE curSystemMode = SYSTEM_MODE.COLLECT;
+  public static SYSTEM_MODE curSystemMode = SYSTEM_MODE.COLLECT;
 
   public Patterns() {
     p = (PAppletHax) P.p;
     pg = p.pg;
     P.store.addListener(this);
-    
     init();
   }
 
@@ -97,7 +96,12 @@ implements IAppStoreListener {
   protected void init() {
     buildParticles();
     buildColorOffsets();
-  }	
+    buildUI();
+  }
+
+  protected void buildUI() {
+    UI.addToggle(SHOW_MODES_DEBUG, false, false);
+  }
 
   protected void buildColorOffsets() {
     // build UI
@@ -127,26 +131,40 @@ implements IAppStoreListener {
     }
   }
 
-  protected void resetParticles(MODE_PATTERN mode) {
-    curPatternMode = mode;
+  protected void resetParticlesForTesting(IArrangement arrangement, IMovement movemode) {
     for (int i = 0; i < NUM_CELLS; i++) {
-      cells[i].setStartPosition();
-      cells[i].nextPatternMode(curPatternMode);
+      cells[i].updateStartArrangement();
+      cells[i].nextPatternMode(arrangement, movemode);
     }
+  }
+
+  protected void drawPost(int frameCount) {
+    if(UI.valueToggle(SHOW_MODES_DEBUG) == false) return;
+    DemoAssets.setDemoFont(p.g);
+    p.text(
+      "State:" + FileUtil.NEWLINE + 
+      "curSystemMode: " + curSystemMode.toString() + FileUtil.NEWLINE + 
+      "Arrangement: " + curArrangementMode.toString() + FileUtil.NEWLINE + 
+      "Movement: " + curMovementMode.toString() + FileUtil.NEWLINE +
+      "globalSpeedMult: " + MathUtil.roundToPrecision(globalSpeedMult.value(), 3) + FileUtil.NEWLINE +
+      "", 
+      20, 30
+    );
   }
 
   protected void draw(int frameCount) {
     checkKeyCommands();    
     updateColorOffsets();
-    updateBehavior();
+    updateGlobalSpeed();
+    switchModes();
     drawParticles();
   }
 
   protected void checkKeyCommands() {
-    if(KeyboardState.keyOn('1')) resetParticles(MODE_PATTERN.WATERFALL);
-    if(KeyboardState.keyOn('2')) resetParticles(MODE_PATTERN.SPIRAL);
-    if(KeyboardState.keyOn('3')) resetParticles(MODE_PATTERN.RINGS);
-    if(KeyboardState.keyOn('4')) resetParticles(MODE_PATTERN.GRID);
+    if(KeyboardState.keyOn('1')) resetParticlesForTesting(arrangements[0], movements[0]);
+    if(KeyboardState.keyOn('2')) resetParticlesForTesting(arrangements[1], movements[1]);
+    if(KeyboardState.keyOn('3')) resetParticlesForTesting(arrangements[2], movements[2]);
+    // if(KeyboardState.keyOn('4')) resetParticlesForTesting(MODE_PATTERN.GRID, movements[0]);
     if(KeyboardState.keyTriggered('c')) randomColorOffsets();
     if(KeyboardState.keyTriggered('v')) printColorOffsets();
     if(KeyboardState.keyTriggered('b')) nextColorOffsets(1);
@@ -227,15 +245,19 @@ implements IAppStoreListener {
   // Behavior
   ////////////////////////////////////
 
-  protected void updateBehavior() {
+  protected void updateGlobalSpeed() {
+    globalSpeedMult.setInc(0.004f);
     globalSpeedMult.update();
-    
-//		if(FrameLoop.frameModMinutes(0.3f)) {
-    if(FrameLoop.loopCurFrame() == 5) {
+  }
+
+  protected void switchModes() {
+    if (FrameLoop.loopCurFrame() == 5) {
       transitionToNewMode();
     }
-//		if(p.frameCount == collectFrame + 240) {
-    if(FrameLoop.loopCurFrame() == 280) {
+    // if (FrameLoop.loopCurFrame() == 500) {
+    //   releaseInNewMode();
+    // }
+    if(curSystemMode == SYSTEM_MODE.COLLECT && allShowing()) {
       releaseInNewMode();
     }
   }
@@ -243,16 +265,14 @@ implements IAppStoreListener {
   protected void transitionToNewMode() {
     curSystemMode = SYSTEM_MODE.COLLECT;
     
-    // make sure we get a new random pattern mode that's different
-    MODE_PATTERN lastMode = curPatternMode;
-    curPatternMode = randomMode();
-    while(lastMode == curPatternMode) curPatternMode = randomMode(); 
+    // make sure we get a new random modes that are different
+    newPatternMode();
+    newMovementMode();
     
     // tell particles to outro
     for (int i = 0; i < NUM_CELLS; i++) {
-      cells[i].nextPatternMode(curPatternMode); 
+      cells[i].nextPatternMode(curArrangementMode, curMovementMode); 
     }
-
     
     // slow down for outro
     setColorIndex(MathUtil.randIndex(colorOffsets.length));
@@ -263,21 +283,41 @@ implements IAppStoreListener {
     curSystemMode = SYSTEM_MODE.BE_FREE;
     globalSpeedMult.setTarget(1);
   }
-
-  protected MODE_PATTERN randomMode() {
-    return MODE_PATTERN_VALS.get(RANDOM_PATTERN.nextInt(PATTERNS_NUM));
+  
+  protected void newPatternMode() {
+    IArrangement lastMode = curArrangementMode;
+    curArrangementMode = randomPatternMode();
+    while(lastMode == curArrangementMode) curArrangementMode = randomPatternMode();
+  }
+  
+  protected IArrangement randomPatternMode() {
+    return arrangements[MathUtil.randIndex(arrangements.length)];
+  }
+  
+  protected void newMovementMode() {
+    IMovement lastMovement = curMovementMode;
+    curMovementMode = randomMovementMode();
+    while(lastMovement == curMovementMode) curMovementMode = randomMovementMode(); 
   }
 
-  protected MODE_MOVEMENT randomMovementMode() {
-    return MODE_MOVEMENT_VALS.get(RANDOM_MOVEMENT.nextInt(MOVEMENTS_NUM));
+  protected IMovement randomMovementMode() {
+    return movements[MathUtil.randIndex(movements.length)];
+  }
+
+  protected boolean allShowing() {
+    boolean allShowing = true;
+    for (int i = 0; i < NUM_CELLS; i++) {
+      if(cells[i].isShowing() == false) allShowing = false;
+    }
+    return allShowing;
   }
 
   protected void drawParticles() {
     // PG.setDrawFlat2d(pg, true);
     pg.ortho();
     for (int i = 0; i < NUM_CELLS; i++) {
-      cells[i].draw();
       cells[i].advance(globalSpeedMult.value());
+      cells[i].draw();
     }			
   }
 
@@ -288,6 +328,7 @@ implements IAppStoreListener {
   public void updatedNumber(String key, Number val) {
     // draw
     if(key.equals(AppState.ANIMATION_FRAME)) draw(val.intValue());
+    if(key.equals(AppState.ANIMATION_FRAME_POST)) drawPost(val.intValue());
 
     // UI
     if(key.equals(UI_R)) { offsetR.setTarget(val.floatValue()); }

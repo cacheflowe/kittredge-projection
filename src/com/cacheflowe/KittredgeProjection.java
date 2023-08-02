@@ -31,7 +31,7 @@ implements IAppStoreListener {
     Config.setProperty(AppSettings.SHOW_DEBUG, false);
     Config.setProperty(AppSettings.SHOW_UI, false);
     Config.setProperty(AppSettings.SHOW_FPS_IN_TITLE, false);
-    Config.setProperty(AppSettings.LOOP_FRAMES, 1500);
+    Config.setProperty(AppSettings.LOOP_FRAMES, 1500); // ~25s
     Config.printProperties();
   }
   
@@ -73,6 +73,5 @@ implements IAppStoreListener {
   public void updatedBoolean(String key, Boolean val) {}
   public void updatedImage(String key, PImage val) {}
   public void updatedBuffer(String key, PGraphics val) {}
-  
 
 }
