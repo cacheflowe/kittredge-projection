@@ -21,12 +21,12 @@ implements IArrangement {
     float xIndex = MathUtil.gridXFromIndex(cell.i, gridRes);
     float yIndex = MathUtil.gridYFromIndex(cell.i, gridRes);
     if (xIndex % 2 == 0) {
-      xIndex -= 0.5f;
-      yIndex += 0.5f;
+      xIndex -= 0.25f;
+      yIndex += 0.25f;
     }
     if (xIndex % 3 == 0) {
-      xIndex += 0.5f;
-      yIndex += 0.5f;
+      xIndex += 0.25f;
+      yIndex += 0.25f;
     }
     cell.setPosition(xIndex * spacingH, yIndex * spacingV);
   }
