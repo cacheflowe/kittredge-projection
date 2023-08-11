@@ -25,7 +25,7 @@ SET arg2=%2
 SET arg3=%3
 SET javaPath=%4
 IF [%javaPath%] == [] (
-	SET javaPath="C:\Program Files\Java\jdk1.8.0_251\bin\java.exe"
+	SET javaPath="C:\Users\kittredgetheater2\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.7.v20230425-1502\jre\bin\java.exe"
 )
 
 REM ======== String replacement to find javac next to java.exe
@@ -38,10 +38,10 @@ del /S src\*.class
 
 REM ======== Compile & run
 SET natives=
-SET classPath=src;bin;lib\haxademic\haxademic.jar;lib\java_websocket\Java-WebSocket-1.5.1.jar;lib\jetty\jetty-all-9.4.30.v20200611-uber.jar;lib\processing-3\core\library\core.jar;lib\processing-3\core\library\gluegen-rt.jar;lib\processing-3\core\library\jogl-all.jar;lib\SimpleLoggingFacade4Java\lib\slf4j-api-1.6.3.jar 
+SET classPath=src;bin;lib\haxademic\haxademic.jar;lib\java_websocket\Java-WebSocket-1.3.9.jar;lib\jetty\jetty-all-9.4.30.v20200611-uber.jar;lib\processing-4\core\library\core.jar;lib\processing-4\core\library\gluegen-rt.jar;lib\processing-4\core\library\jogl-all.jar 
 
 %javaCPath% -classpath %classPath% src\com\reddymade\MePlusYouCapture.java
-%javaPath% -Xmx512m -Xms64m %natives% -classpath %classPath% com.reddymade.MePlusYouCapture stationIndex=%arg1% %arg2% %arg3%
+%javaPath% -Xmx16G -Xms4G %natives% -classpath %classPath%  com.cacheflowe.KittredgeProjection
 
 REM ======== Move back to ./scripts dir
 cd scripts
@@ -54,3 +54,4 @@ REM taskkill /f /t /im javaw.exe
 timeout 15
 echo Restarting at %DATE%,%TIME%
 goto :restart
+
