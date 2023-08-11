@@ -1,6 +1,6 @@
-package com.cacheflowe.arrangements;
+package com.cacheflowe.draw.arrangements;
 
-import com.cacheflowe.VoronoiCell;
+import com.cacheflowe.draw.VoronoiCell;
 import com.haxademic.core.app.P;
 
 import processing.core.PGraphics;

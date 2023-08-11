@@ -1,7 +1,7 @@
-package com.cacheflowe.arrangements;
+package com.cacheflowe.draw.arrangements;
 
-import com.cacheflowe.Patterns;
-import com.cacheflowe.VoronoiCell;
+import com.cacheflowe.draw.Patterns;
+import com.cacheflowe.draw.VoronoiCell;
 import com.haxademic.core.app.P;
 import com.haxademic.core.math.MathUtil;
 

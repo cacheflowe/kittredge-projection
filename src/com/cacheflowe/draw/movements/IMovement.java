@@ -1,6 +1,6 @@
-package com.cacheflowe.movements;
+package com.cacheflowe.draw.movements;
 
-import com.cacheflowe.VoronoiCell;
+import com.cacheflowe.draw.VoronoiCell;
 
 import processing.core.PGraphics;
 

@@ -1,5 +1,7 @@
 package com.cacheflowe;
 
+import com.cacheflowe.draw.Patterns;
+import com.cacheflowe.draw.PostFX;
 import com.haxademic.core.app.P;
 import com.haxademic.core.app.PAppletHax;
 import com.haxademic.core.app.config.AppSettings;
@@ -25,13 +27,13 @@ implements IAppStoreListener {
     int appH = 1920;
     Config.setAppSize(appW, appH);
     Config.setPgSize(appW, appH);
-    Config.setProperty(AppSettings.FULLSCREEN, true);
+    Config.setProperty(AppSettings.FULLSCREEN, false);
     Config.setProperty(AppSettings.SCREEN_X, 1920);
     Config.setProperty(AppSettings.SCREEN_Y, 0);
     Config.setProperty(AppSettings.SHOW_DEBUG, false);
     Config.setProperty(AppSettings.SHOW_UI, false);
     Config.setProperty(AppSettings.SHOW_FPS_IN_TITLE, false);
-    Config.setProperty(AppSettings.LOOP_FRAMES, 3000); // ~25s
+    Config.setProperty(AppSettings.LOOP_FRAMES, 2400); // ~40s
     Config.printProperties();
   }
   

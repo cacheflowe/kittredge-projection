@@ -1,16 +1,23 @@
-package com.cacheflowe;
+package com.cacheflowe.draw;
 
-import com.cacheflowe.arrangements.ArrangementDiag;
-import com.cacheflowe.arrangements.ArrangementGrid;
-import com.cacheflowe.arrangements.ArrangementRandom;
-import com.cacheflowe.arrangements.ArrangementRings;
-import com.cacheflowe.arrangements.ArrangementSpiral;
-import com.cacheflowe.arrangements.IArrangement;
-import com.cacheflowe.movements.IMovement;
-import com.cacheflowe.movements.MovementGrid;
-import com.cacheflowe.movements.MovementOutFromCenterVertical;
-import com.cacheflowe.movements.MovementRadialOut;
-import com.cacheflowe.movements.MovementWaterfall;
+import com.cacheflowe.draw.arrangements.ArrangementDiag;
+import com.cacheflowe.draw.arrangements.ArrangementGrid;
+import com.cacheflowe.draw.arrangements.ArrangementGridFiveByFive;
+import com.cacheflowe.draw.arrangements.ArrangementGridFourByFour;
+import com.cacheflowe.draw.arrangements.ArrangementRandom;
+import com.cacheflowe.draw.arrangements.ArrangementRings;
+import com.cacheflowe.draw.arrangements.ArrangementSpiral;
+import com.cacheflowe.draw.arrangements.IArrangement;
+import com.cacheflowe.draw.movements.IMovement;
+import com.cacheflowe.draw.movements.MovementGrid;
+import com.cacheflowe.draw.movements.MovementGridFiveByFive;
+import com.cacheflowe.draw.movements.MovementGridFourByFour;
+import com.cacheflowe.draw.movements.MovementInToCenterVertical;
+import com.cacheflowe.draw.movements.MovementOutFromCenterVertical;
+import com.cacheflowe.draw.movements.MovementRadialIn;
+import com.cacheflowe.draw.movements.MovementRadialOut;
+import com.cacheflowe.draw.movements.MovementWaterfall;
+import com.cacheflowe.draw.movements.MovementWaterfallUp;
 import com.haxademic.core.app.P;
 import com.haxademic.core.app.PAppletHax;
 import com.haxademic.core.data.store.AppState;
@@ -65,15 +72,22 @@ implements IAppStoreListener {
     new ArrangementRandom(),
     new ArrangementRings(),
     new ArrangementSpiral(),
+    new ArrangementGridFiveByFive(),
+    new ArrangementGridFourByFour(),
   };
   protected IArrangement curArrangementMode = arrangements[0];
   
   // current particle movement
   public static IMovement[] movements = new IMovement[] {
     new MovementRadialOut(),
+    new MovementRadialIn(),
     new MovementWaterfall(),
+    new MovementWaterfallUp(),
     new MovementGrid(),
     new MovementOutFromCenterVertical(),
+    new MovementInToCenterVertical(),
+    new MovementGridFourByFour(),
+    new MovementGridFiveByFive(),
   };
   protected IMovement curMovementMode = movements[0];
 
@@ -102,7 +116,7 @@ implements IAppStoreListener {
   }
 
   protected void buildUI() {
-    UI.addToggle(SHOW_MODES_DEBUG, false, false);
+    UI.addToggle(SHOW_MODES_DEBUG, true, false);
   }
 
   protected void buildColorOffsets() {
@@ -115,6 +129,7 @@ implements IAppStoreListener {
     }
     // build array
     colorOffsets = new float[][] {
+      new float[] {0, 0, 0},
       new float[] {0, 1, 2},
       new float[] {1, 0, 2},
       new float[] {2.506f, 1.796f, 2.464f},
@@ -318,7 +333,7 @@ implements IAppStoreListener {
     // PG.setDrawFlat2d(pg, true);
     pg.ortho();
     for (int i = 0; i < NUM_CELLS; i++) {
-      cells[i].advance(globalSpeedMult.value());
+      cells[i].advance(globalSpeedMult.value(), globalSpeedMult.target());
       cells[i].draw();
     }			
   }

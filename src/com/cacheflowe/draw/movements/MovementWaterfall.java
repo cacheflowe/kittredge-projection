@@ -1,6 +1,6 @@
-package com.cacheflowe.movements;
+package com.cacheflowe.draw.movements;
 
-import com.cacheflowe.VoronoiCell;
+import com.cacheflowe.draw.VoronoiCell;
 import com.haxademic.core.app.P;
 import com.haxademic.core.math.MathUtil;
 
@@ -21,7 +21,7 @@ implements IMovement {
   }
 
   public void checkRecycle(VoronoiCell cell, PGraphics pg) {
-    if (cell.y > pg.height * 1.25f) {
+    if (cell.y > pg.height * 1.1f) {
       cell.hide();
     }
   }

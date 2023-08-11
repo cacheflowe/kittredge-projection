@@ -1,6 +1,6 @@
-package com.cacheflowe.movements;
+package com.cacheflowe.draw.movements;
 
-import com.cacheflowe.VoronoiCell;
+import com.cacheflowe.draw.VoronoiCell;
 import com.haxademic.core.app.P;
 import com.haxademic.core.math.MathUtil;
 
@@ -25,26 +25,26 @@ implements IMovement {
   }
 
   public void checkRecycle(VoronoiCell cell, PGraphics pg) {
-    if (cell.speedX > 0 && cell.x > pg.width * 1.25f) {
+    if (cell.speedX > 0 && cell.x > pg.width * 1.1f) {
       cell.hide();
-    } else if (cell.speedX < 0 && cell.x < pg.width * -0.25f) {
+    } else if (cell.speedX < 0 && cell.x < pg.width * -0.1f) {
       cell.hide();
-    } else if (cell.speedY > 0 && cell.y > pg.height * 1.25f) {
+    } else if (cell.speedY > 0 && cell.y > pg.height * 1.1f) {
       cell.hide();
-    } else if (cell.speedY < 0 && cell.y < pg.height * -0.25f) {
+    } else if (cell.speedY < 0 && cell.y < pg.height * -0.1f) {
       cell.hide();
     }
   }
   
   public boolean recycle(VoronoiCell cell, PGraphics pg) {
-    if (cell.speedX > 0 && cell.x > pg.width * 1.25f) {
-      cell.x = -pg.width * 0.25f;
-    } else if (cell.speedX < 0 && cell.x < pg.width * -0.25f) {
-      cell.x = pg.width * 1.25f;
-    } else if (cell.speedY > 0 && cell.y > pg.height * 1.25f) {
-      cell.y = -pg.height * 0.25f;
-    } else if (cell.speedY < 0 && cell.y < pg.height * -0.25f) {
-      cell.y = pg.height * 1.25f;
+    if (cell.speedX > 0 && cell.x > pg.width * 1.1f) {
+      cell.x = -pg.width * 0.1f;
+    } else if (cell.speedX < 0 && cell.x < pg.width * -0.1f) {
+      cell.x = pg.width * 1.1f;
+    } else if (cell.speedY > 0 && cell.y > pg.height * 1.1f) {
+      cell.y = -pg.height * 0.1f;
+    } else if (cell.speedY < 0 && cell.y < pg.height * -0.1f) {
+      cell.y = pg.height * 1.1f;
     }
     return true;
   }

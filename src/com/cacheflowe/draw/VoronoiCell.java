@@ -1,7 +1,7 @@
-package com.cacheflowe;
+package com.cacheflowe.draw;
 
-import com.cacheflowe.arrangements.IArrangement;
-import com.cacheflowe.movements.IMovement;
+import com.cacheflowe.draw.arrangements.IArrangement;
+import com.cacheflowe.draw.movements.IMovement;
 import com.haxademic.core.app.P;
 import com.haxademic.core.app.PAppletHax;
 import com.haxademic.core.math.MathUtil;
@@ -83,17 +83,19 @@ public class VoronoiCell {
     pg.fill(Patterns.rWithIndex(i), Patterns.gWithIndex(i), Patterns.bWithIndex(i));
     pg.translate(this.x, this.y, 0);
     float curScale = (scale.value() != 1) ? 
-      Penner.easeInOutExpo(scale.value()) : 
-      1;
-    pg.scale(curScale, curScale, 1);
+    Penner.easeOutExpo(scale.value()) : // easeInOutExpo
+    1;
+    pg.scale(curScale * 1f, curScale * 1f, 1);
     pg.shape(shape);
     pg.pop();
   }
-
-  public void advance(float globalSpeedMult) {
+  
+  public void advance(float globalSpeedMult, float globalSpeedTarget) {
+    age++;
     updateScale();
     updateMovement(globalSpeedMult);
-    movement.checkRecycle(this, pg);
+    boolean canRecycle = globalSpeedMult > 0.1f && scale.target() == 1 && globalSpeedTarget == 1;
+    if(canRecycle) movement.checkRecycle(this, pg); // don't recycle if not moving
   }
 
   public void nextPatternMode(IArrangement newArrangement, IMovement newMovement) {
@@ -122,6 +124,7 @@ public class VoronoiCell {
 
   protected void checkSwitchModeWhenHidden() {
     if(isFullyHidden()) {
+      age = 0;
       boolean modeChanged = arrangement != queuedArrangement; 
       arrangement = queuedArrangement;
       movement = queuedMovement;
