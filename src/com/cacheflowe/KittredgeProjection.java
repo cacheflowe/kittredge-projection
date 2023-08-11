@@ -42,7 +42,7 @@ implements IAppStoreListener {
 
     patterns = new Patterns();
     postFX = new PostFX();
-    // uptime = new Uptime();
+    uptime = new Uptime();
   }
 
   public void drawApp() {
