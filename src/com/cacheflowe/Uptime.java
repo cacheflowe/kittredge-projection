@@ -7,6 +7,7 @@ import com.haxademic.core.data.store.AppState;
 import com.haxademic.core.data.store.IAppStoreListener;
 import com.haxademic.core.debug.DebugView;
 import com.haxademic.core.draw.context.PG;
+import com.haxademic.core.draw.image.ImageUtil;
 import com.haxademic.core.hardware.mouse.Mouse;
 import com.haxademic.core.net.DashboardCheckinPoller;
 import com.haxademic.core.render.FrameLoop;
@@ -38,7 +39,7 @@ implements IAppStoreListener {
 
   protected void init() {
     DashboardCheckinPoller.DEBUG = false;
-    debugBuffer = PG.newPG(p.width, p.height);
+    debugBuffer = PG.newPG(p.pg.width/2, p.pg.height/2);
     int screenshotInterval = DateUtil.hoursToSeconds(0.5f);
     int checkinInterval = DateUtil.minutesToSeconds(10);
     dashboardCheckinPoller = new DashboardCheckinPoller("kittredge-projection", "Kittredge Projection", Config.getString("dashboard_url", "http://localhost/haxademic/www/dashboard-new/"), checkinInterval, screenshotInterval, 0.3f);
@@ -54,7 +55,7 @@ implements IAppStoreListener {
   protected void drawPost(int frameCount) {
     hidePanels();
     restartNightly();
-    // clickScreenOnInterval();
+    clickScreenOnInterval();
     logUptime();
     drawDebug();
   }
@@ -81,7 +82,7 @@ implements IAppStoreListener {
     // do it once after startup, then every half hour
     if(FrameLoop.count() < 10) return;
     if(FrameLoop.count() == 600 || FrameLoop.count() == 1200 || FrameLoop.frameModMinutes(30)) { 
-      Mouse.mouseClickAt(600, 200);
+      Mouse.mouseClickAt(2000, 200);
       Mouse.setPointerLocation(p, 9999, 60);
     }
   }
@@ -92,7 +93,7 @@ implements IAppStoreListener {
     if(FrameLoop.frameModMinutes(15) || DebugView.active()) {
       debugBuffer.beginDraw();
       debugBuffer.noStroke();
-      debugBuffer.image(P.p.g, 0, 0); // just draw main output 
+      ImageUtil.copyImage(p.pg, debugBuffer); // just draw main output 
       debugBuffer.endDraw();
     }
   }
