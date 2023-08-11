@@ -9,6 +9,7 @@ import com.haxademic.core.app.config.Config;
 import com.haxademic.core.data.store.AppState;
 import com.haxademic.core.data.store.IAppStoreListener;
 import com.haxademic.core.draw.image.ImageUtil;
+import com.haxademic.core.system.DateUtil;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -51,12 +52,15 @@ implements IAppStoreListener {
     p.noStroke();
     
     // MAIN DRAW STEPS:
-    P.store.setNumber(AppState.ANIMATION_FRAME_PRE, p.frameCount);
-    pg.beginDraw();
-    pg.background(0); // don't clear background so we can leave viz in place for video transition after they stop drawing
-    P.store.setNumber(AppState.ANIMATION_FRAME, p.frameCount);
-    pg.endDraw();
-    P.store.setNumber(AppState.ANIMATION_FRAME_POST, p.frameCount);
+    boolean shouldDraw = DateUtil.timeIsBetweenHours(6, 17) == false;
+    if(shouldDraw) {
+      P.store.setNumber(AppState.ANIMATION_FRAME_PRE, p.frameCount);
+      pg.beginDraw();
+      pg.background(0); // don't clear background so we can leave viz in place for video transition after they stop drawing
+      P.store.setNumber(AppState.ANIMATION_FRAME, p.frameCount);
+      pg.endDraw();
+      P.store.setNumber(AppState.ANIMATION_FRAME_POST, p.frameCount);
+    }
     
     // draw to screen
     ImageUtil.cropFillCopyImage(pg, p.g, false);
@@ -65,7 +69,6 @@ implements IAppStoreListener {
     // P.store.showStoreValuesInDebugView();
   }
   
-    
   /////////////////////////////////
   // APPSTORE LISTENERS
   /////////////////////////////////
