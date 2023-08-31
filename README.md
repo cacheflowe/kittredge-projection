@@ -1,6 +1,6 @@
 # Kittredge Projection
 
-This is an original art piece by Cacheflowe. More info to come.
+This is an original art piece by Cacheflowe, designed to be projected on the historic Kittredge building in downtown Denver.
 
 
 ## License
