@@ -52,7 +52,7 @@ implements IAppStoreListener {
     p.noStroke();
     
     // MAIN DRAW STEPS:
-    boolean shouldDraw = DateUtil.timeIsBetweenHours(6, 17) == false;
+    boolean shouldDraw = DateUtil.timeIsBetweenHours(6, 16) == false;
     if(shouldDraw) {
       P.store.setNumber(AppState.ANIMATION_FRAME_PRE, p.frameCount);
       pg.beginDraw();
