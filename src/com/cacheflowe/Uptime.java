@@ -70,8 +70,10 @@ implements IAppStoreListener {
 
   protected void restartNightly() {
     // every half hour, check if we've been up for over a day, and we're between 12-1pm
-    if(FrameLoop.frameModMinutes(30)) {
-      if(DateUtil.uptimeHours() > 1.1f && DateUtil.timeIsBetweenHours(5, 6)) {
+    if(FrameLoop.frameModMinutes(20)) {
+      P.out("Checking nightly restart", DateUtil.todayHours(), DateUtil.uptimeHours());
+      if(DateUtil.uptimeHours() > 1.1f && DateUtil.timeIsBetweenHours(4, 6)) {
+        P.out("Attempting to quit for nightly restart");
         p.exit();	// use CrashMonitor & run.cmd to restart from cmd loop
       }
     }
