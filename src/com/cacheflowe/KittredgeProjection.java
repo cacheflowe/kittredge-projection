@@ -46,21 +46,28 @@ implements IAppStoreListener {
     uptime = new Uptime();
   }
 
+  public static boolean shouldDraw() {
+    return DateUtil.timeIsBetweenHours(6, 16) == false;
+  }
+
+  public static boolean isRestartWindow() {
+    return DateUtil.timeIsBetweenHours(5, 6);
+  }
+
   public void drawApp() {
     // main app canvas context setup
     p.background(0);
     p.noStroke();
     
     // MAIN DRAW STEPS:
-    boolean shouldDraw = DateUtil.timeIsBetweenHours(6, 16) == false;
-    if(shouldDraw) {
+    if(shouldDraw()) {
       P.store.setNumber(AppState.ANIMATION_FRAME_PRE, p.frameCount);
       pg.beginDraw();
       pg.background(0); // don't clear background so we can leave viz in place for video transition after they stop drawing
       P.store.setNumber(AppState.ANIMATION_FRAME, p.frameCount);
       pg.endDraw();
-      P.store.setNumber(AppState.ANIMATION_FRAME_POST, p.frameCount);
     }
+    P.store.setNumber(AppState.ANIMATION_FRAME_POST, p.frameCount);
     
     // draw to screen
     ImageUtil.cropFillCopyImage(pg, p.g, false);

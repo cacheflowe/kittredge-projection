@@ -1,5 +1,6 @@
 package com.cacheflowe.draw;
 
+import com.cacheflowe.KittredgeProjection;
 import com.haxademic.core.app.P;
 import com.haxademic.core.app.PAppletHax;
 import com.haxademic.core.data.store.AppState;
@@ -75,6 +76,7 @@ implements IAppStoreListener {
   }
 
   protected void drawPost(int frameCount) {
+    if(KittredgeProjection.shouldDraw() == false) return;
     applyLighting();
     applyColorCorrection();
   }
