@@ -1,7 +1,7 @@
 REM @echo off
 REM ======== Don't display this script's commands
 
-start "" kill-java-nightly.cmd
+start "" kill-java-daily.cmd
 
 REM ======== Restart point if app disappears
 :restart
