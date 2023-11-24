@@ -2,6 +2,7 @@ package com.cacheflowe;
 
 import com.cacheflowe.draw.Patterns;
 import com.cacheflowe.draw.PostFX;
+import com.cacheflowe.draw.holiday.Holiday;
 import com.haxademic.core.app.P;
 import com.haxademic.core.app.PAppletHax;
 import com.haxademic.core.app.config.AppSettings;
@@ -22,6 +23,10 @@ implements IAppStoreListener {
   protected Patterns patterns;
   protected PostFX postFX;
   protected Uptime uptime;
+  
+  protected Holiday holiday;
+  protected boolean holidayMode = true;
+  public static boolean localDev = false;
 
   protected void config() {
     int appW = 2160;
@@ -41,15 +46,22 @@ implements IAppStoreListener {
   protected void firstFrame() {
     P.store.addListener(this);
 
-    patterns = new Patterns();
-    postFX = new PostFX();
-    uptime = new Uptime();
+    if(!holidayMode) {
+      patterns = new Patterns();
+      postFX = new PostFX();
+    } else {
+      holiday = new Holiday();
+    }
+    if(!localDev) {
+      uptime = new Uptime();
+    }
   }
 
   public static boolean shouldDraw() {
+    if(localDev == true) return true;
     return DateUtil.timeIsBetweenHours(6, 16) == false;
   }
-
+  
   public static boolean isRestartWindow() {
     return DateUtil.timeIsBetweenHours(5, 6);
   }

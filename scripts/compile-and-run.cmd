@@ -42,7 +42,7 @@ REM ======== Compile & run
 SET natives=
 SET classPath=src;bin;lib\haxademic\haxademic.jar;lib\java_websocket\Java-WebSocket-1.3.9.jar;lib\jetty\jetty-all-9.4.30.v20200611-uber.jar;lib\processing-4\core\library\core.jar;lib\processing-4\core\library\gluegen-rt.jar;lib\processing-4\core\library\jogl-all.jar 
 
-%javaCPath% -classpath %classPath% src\com\reddymade\MePlusYouCapture.java
+%javaCPath% -classpath %classPath% src\com\cacheflowe\KittredgeProjection.java
 %javaPath% -Xmx16G -Xms4G %natives% -classpath %classPath%  com.cacheflowe.KittredgeProjection
 
 REM ======== Move back to ./scripts dir
