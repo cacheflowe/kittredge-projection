@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import com.haxademic.core.app.P;
 import com.haxademic.core.app.PAppletHax;
-import com.haxademic.core.app.config.AppSettings;
 import com.haxademic.core.data.constants.PBlendModes;
 import com.haxademic.core.data.store.AppState;
 import com.haxademic.core.data.store.IAppStoreListener;
@@ -15,7 +14,6 @@ import com.haxademic.core.draw.context.PG;
 import com.haxademic.core.draw.context.PShaderHotSwap;
 import com.haxademic.core.draw.filters.pshader.BlendTowardsTexture;
 import com.haxademic.core.draw.filters.pshader.ContrastFilter;
-import com.haxademic.core.draw.image.ImageCacher;
 import com.haxademic.core.draw.image.ImageUtil;
 import com.haxademic.core.draw.shapes.PShapeUtil;
 import com.haxademic.core.draw.textures.SimplexNoiseTexture;
@@ -57,6 +55,10 @@ implements IAppStoreListener {
   protected String MAP_MODE = "MAP_MODE";
   protected String MAP_ROT = "MAP_ROT";
   protected String COLS = "COLS";
+
+  protected int COLOR_GREEN = 0xff55ff55;
+  protected int COLOR_RED = 0xffff6666;
+  protected int COLOR_GOLD = 0xffFFD733;
 
   public Holiday() {
     p = (PAppletHax) P.p;
@@ -128,7 +130,7 @@ implements IAppStoreListener {
 
   protected void updateMode() {
     // update overall mode
-    if(FrameLoop.frameModMinutes(3) || KeyboardState.keyTriggered('m')) {
+    if(FrameLoop.frameModMinutes(2) || KeyboardState.keyTriggered('m')) {
       modeChanges++;
       if(modeChanges % 8 < 2) {
         UI.setValue(ICONS_MODE, 0);
@@ -161,8 +163,8 @@ implements IAppStoreListener {
     map.beginDraw();
     map.background(0);
     map.push();
-    int col1 = p.color(127 + 127f * P.sin(p.frameCount * 0.0021f));
-    int col2 = p.color(127 + 127f * P.sin(p.frameCount * 0.0037f));
+    int col1 = p.color(127 + 127f * MathUtil.saw(p.frameCount * 0.001f));
+    int col2 = p.color(127 + 127f * MathUtil.saw(p.frameCount * 0.001f + 0.6f));
     float size = P.max(map.width, map.height) * 2f;
 		map.translate(map.width/2, map.height/2);
     map.rotate(UI.value(MAP_ROT));
@@ -250,9 +252,9 @@ implements IAppStoreListener {
       scale = P.map(scale, 0, 255, 0.5f, 1.1f);
       if(UI.valueInt(ICONS_MODE) == 1) {
         if(pixelLuma % 60 < 20) {
-          pg.tint(0, 220, 0);
+          pg.tint(COLOR_GREEN);
         } else if(pixelLuma % 60 < 40) {
-          pg.tint(220, 0, 0);
+          pg.tint(COLOR_RED);
         }
       }
       pg.image(curImgs[idx], 0, 0, targetSize * scale, targetSize * scale);
@@ -530,11 +532,11 @@ implements IAppStoreListener {
       pg.rotate(P.sin(index + p.frameCount * 0.002f));
       if(UI.valueInt(ICONS_MODE) == 3) {
         if(index < 2) {
-          pg.tint(0, 220, 0);
+          pg.tint(COLOR_GREEN);
         } else if(index < 4) {
-          pg.tint(220, 0, 0);
+          pg.tint(COLOR_RED);
         } else if(index < 5) {
-          pg.tint(0xffFFD700);
+          pg.tint(COLOR_GOLD);
         }
       }
 			pg.image(imagesSnow[index], 0, 0, size * snowScale, size * snowScale);
