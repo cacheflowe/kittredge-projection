@@ -132,11 +132,12 @@ implements IAppStoreListener {
     // update overall mode
     if(FrameLoop.frameModMinutes(2) || KeyboardState.keyTriggered('m')) {
       modeChanges++;
-      if(modeChanges % 8 < 2) {
+      int modeLoop = modeChanges % 4;
+      if(modeLoop < 1) {
         UI.setValue(ICONS_MODE, 0);
-      } else if(modeChanges % 8 < 4) {
+      } else if(modeLoop < 2) {
         UI.setValue(ICONS_MODE, 1);
-      }  else if(modeChanges % 8 < 6) {
+      } else if(modeLoop < 3) {
         UI.setValue(ICONS_MODE, 2);
       } else {
         UI.setValue(ICONS_MODE, 3);
