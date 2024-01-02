@@ -25,7 +25,7 @@ implements IAppStoreListener {
   protected Uptime uptime;
   
   protected Holiday holiday;
-  protected boolean holidayMode = true;
+  protected boolean holidayMode = false;
   public static boolean localDev = false;
 
   protected void config() {
