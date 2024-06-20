@@ -3,6 +3,7 @@ package com.cacheflowe;
 import com.cacheflowe.draw.Patterns;
 import com.cacheflowe.draw.PostFX;
 import com.cacheflowe.draw.holiday.Holiday;
+import com.cacheflowe.draw.newviz.NewViz;
 import com.haxademic.core.app.P;
 import com.haxademic.core.app.PAppletHax;
 import com.haxademic.core.app.config.AppSettings;
@@ -26,16 +27,22 @@ implements IAppStoreListener {
   
   protected Holiday holiday;
   protected boolean holidayMode = false;
-  public static boolean localDev = false;
+
+  protected NewViz newViz;
+  protected boolean newVizMode = true;
+
+  public static boolean PRODUCTION_MODE = false;
 
   protected void config() {
     int appW = 2160;
     int appH = 1920;
-    Config.setAppSize(appW, appH);
+    Config.setAppSize(appW/2, appH/2);
     Config.setPgSize(appW, appH);
-    Config.setProperty(AppSettings.FULLSCREEN, true);
-    Config.setProperty(AppSettings.SCREEN_X, 1920);
-    Config.setProperty(AppSettings.SCREEN_Y, 0);
+    if(PRODUCTION_MODE) {
+      Config.setProperty(AppSettings.FULLSCREEN, false);
+      Config.setProperty(AppSettings.SCREEN_X, 1920);
+      Config.setProperty(AppSettings.SCREEN_Y, 0);
+    }
     Config.setProperty(AppSettings.SHOW_DEBUG, false);
     Config.setProperty(AppSettings.SHOW_UI, false);
     Config.setProperty(AppSettings.SHOW_FPS_IN_TITLE, false);
@@ -46,19 +53,21 @@ implements IAppStoreListener {
   protected void firstFrame() {
     P.store.addListener(this);
 
-    if(!holidayMode) {
+    if(newVizMode) {
+      newViz = new NewViz();
+    } else if(holidayMode) {
+      holiday = new Holiday();
+    } else {
       patterns = new Patterns();
       postFX = new PostFX();
-    } else {
-      holiday = new Holiday();
     }
-    if(!localDev) {
+    if (PRODUCTION_MODE) {
       uptime = new Uptime();
     }
   }
 
   public static boolean shouldDraw() {
-    if(localDev == true) return true;
+    if(PRODUCTION_MODE == true) return true;
     return DateUtil.timeIsBetweenHours(6, 16) == false;
   }
   
@@ -75,7 +84,7 @@ implements IAppStoreListener {
     if(shouldDraw()) {
       P.store.setNumber(AppState.ANIMATION_FRAME_PRE, p.frameCount);
       pg.beginDraw();
-      pg.background(0); // don't clear background so we can leave viz in place for video transition after they stop drawing
+      if(newViz == null) pg.background(0);
       P.store.setNumber(AppState.ANIMATION_FRAME, p.frameCount);
       pg.endDraw();
     }

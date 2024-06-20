@@ -25,7 +25,6 @@ implements IAppStoreListener {
   protected PGraphics debugBuffer;
   protected DashboardCheckinPoller dashboardCheckinPoller;
   protected CrashMonitor crashMonitor;
-  public static String CAMERA_FROZEN = "CAMERA_FROZEN";
 
   public Uptime() {
     p = (PAppletHax) P.p;
