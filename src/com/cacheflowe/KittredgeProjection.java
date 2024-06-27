@@ -32,6 +32,7 @@ implements IAppStoreListener {
   protected boolean newVizMode = true;
 
   public static boolean PRODUCTION_MODE = false;
+  public static boolean localDev = true;
 
   protected void config() {
     int appW = 2160;
@@ -67,7 +68,7 @@ implements IAppStoreListener {
   }
 
   public static boolean shouldDraw() {
-    if(PRODUCTION_MODE == true) return true;
+    if(localDev == true) return true;
     return DateUtil.timeIsBetweenHours(6, 16) == false;
   }
   
