@@ -40,7 +40,7 @@ implements IAppStoreListener {
     Config.setAppSize(appW/2, appH/2);
     Config.setPgSize(appW, appH);
     if(PRODUCTION_MODE) {
-      Config.setProperty(AppSettings.FULLSCREEN, false);
+      Config.setProperty(AppSettings.FULLSCREEN, true);
       Config.setProperty(AppSettings.SCREEN_X, 1920);
       Config.setProperty(AppSettings.SCREEN_Y, 0);
     }
