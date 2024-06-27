@@ -37,12 +37,14 @@ implements IAppStoreListener {
   protected void config() {
     int appW = 2160;
     int appH = 1920;
-    Config.setAppSize(appW/2, appH/2);
+    Config.setAppSize(appW, appH);
     Config.setPgSize(appW, appH);
     if(PRODUCTION_MODE) {
       Config.setProperty(AppSettings.FULLSCREEN, true);
       Config.setProperty(AppSettings.SCREEN_X, 1920);
       Config.setProperty(AppSettings.SCREEN_Y, 0);
+    } else {
+      Config.setAppSize(appW/2, appH/2);
     }
     Config.setProperty(AppSettings.SHOW_DEBUG, false);
     Config.setProperty(AppSettings.SHOW_UI, false);
