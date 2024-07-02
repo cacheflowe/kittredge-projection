@@ -31,8 +31,8 @@ implements IAppStoreListener {
   protected NewViz newViz;
   protected boolean newVizMode = true;
 
-  public static boolean PRODUCTION_MODE = false;
-  public static boolean localDev = true;
+  public static boolean PRODUCTION_MODE = true;
+  public static boolean localDev = false;
 
   protected void config() {
     int appW = 2160;
