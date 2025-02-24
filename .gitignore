@@ -5,3 +5,5 @@ bin/
 output/
 *Thumbs.db
 .DS_Store
+td/Backup/
+td/kittredge-mapping.*.toe
