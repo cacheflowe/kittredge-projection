@@ -7,3 +7,4 @@ output/
 .DS_Store
 td/Backup/
 td/kittredge-mapping.*.toe
+td/data/.env

@@ -1,1 +1,26 @@
-*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%}body{background-color:#c1d6dd;overscroll-behavior-y:none}.stats-hide{display:none}.lil-gui.autoPlace{right:0!important}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+body {
+    background-color: #c1d6dd;
+    overscroll-behavior-y: none;
+}
+#graphics {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.stats-hide {
+    display: none;
+}
+.lil-gui.autoPlace {
+    /* right: 0 !important; */
+}
