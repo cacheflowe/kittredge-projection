@@ -1,4 +1,4 @@
 start "" td-stop.cmd
-start "" www-stop.cmd
+@REM start "" www-stop.cmd
 
 exit
