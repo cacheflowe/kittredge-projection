@@ -8,3 +8,4 @@ output/
 td/Backup/
 td/kittredge-mapping.*.toe
 td/data/.env
+__pycache__
