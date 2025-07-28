@@ -1,5 +1,4 @@
 # Python standard lib imports
-import config
 import os
 import sys
 import importlib
@@ -10,6 +9,7 @@ if utils_path not in sys.path:
 		sys.path.append(utils_path)
 
 # Custom imports
+import config
 
 
 class App:
@@ -144,7 +144,6 @@ class App:
 				return op('select_active_items').numRows
 
 		def PlaylistNext(self):
-				print("[App] Triggering Playlist Next")
 				# Increment the playlist index and wrap around if necessary
 				self.playlistIndex = (self.playlistIndex + 1) % self.PlaylistLength()
 				# get playlist data and switch mode
