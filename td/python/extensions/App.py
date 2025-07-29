@@ -140,7 +140,8 @@ class App:
 			self.PlaylistNext()
 
 	def On_launch_window(self, key, value, type):
-		self.LaunchOutputWindow() if value == 1 else None
+		# launch window and keep the current perform mode
+		self.LaunchOutputWindow(ui.performMode) if value == 1 else None
 
 	def On_close_window(self, key, value, type):
 		self.CloseOutputWindow() if value == 1 else None
