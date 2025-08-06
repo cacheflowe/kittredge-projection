@@ -6,14 +6,15 @@ This is an original art piece by Cacheflowe, designed to be projected on the his
 
 Playlist:
 - Launch
-  - [SOULD BE GOOD] Make sure Autosave is off w/.env var for is_production
-  - Bypass half-resolution TOP
-  - Upgrade TD version on Production to match latest dev version
+  - [DONE - TEST] Add perform button toggle & visible stats from TB project 
+  - [TEST FIX] Make sure Autosave is off w/.env var for is_production
+    - [DONE] Bring in updated tox from TB project
+  - [DONE?] Upgrade TD version on Production to match latest dev version
   - [Check w/Moke] Add a play progress bar - needs to be implemented per-visual, either with timer or movie progress
 
 
 - Nice-to-haves
-  - Refactor app stokre keys into constants
+- Refactor app store keys into constants
   - Add a Web UI to control the playlist?
   - Rebuild active playlist as text TOP for nicer UI display
 - Other

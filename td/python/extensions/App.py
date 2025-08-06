@@ -33,6 +33,7 @@ class App:
 	EVENT_PLAYLIST_NEXT = 'playlist_next'
 	LAUNCH_WINDOW = 'launch_window'
 	CLOSE_WINDOW = 'close_window'
+	PERFORM_TOGGLE = 'perform_toggle'
 
 	def __init__(self, ownerComp):
 		self.ownerComp = ownerComp
@@ -130,6 +131,7 @@ class App:
 		op.AppStore.AddListener(self, App.EVENT_PLAYLIST_NEXT)
 		op.AppStore.AddListener(self, App.LAUNCH_WINDOW)
 		op.AppStore.AddListener(self, App.CLOSE_WINDOW)
+		op.AppStore.AddListener(self, App.PERFORM_TOGGLE)
 
 	def OnAppStoreValueChanged(self, key, value, type):
 		# print(f"[App] *** {key} = {value} (type: {type})")
@@ -145,6 +147,10 @@ class App:
 
 	def On_close_window(self, key, value, type):
 		self.CloseOutputWindow() if value == 1 else None
+
+	def On_perform_toggle(self, key, value, type):
+		ui.performMode = value
+
 
 	# ===============================================
 	# Playlist Control Helpers
